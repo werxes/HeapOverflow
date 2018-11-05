@@ -1,6 +1,8 @@
 <#import "parts/common.ftl" as c>
 <@c.page>
 
+Hello ${username}
+<br>
 <div class="card">
   <div class="card-header">
     Featured
@@ -24,6 +26,15 @@
 	</table>
   </div>
 </div>
+
+<br>
+
+<form action="/logout" method="post">
+	<input type="submit" value="Logout"/>
+    <input type="hidden" name="_csrf" value="${_csrf.token}" />
+</form>
+
+
 
 
 </@c.page>
