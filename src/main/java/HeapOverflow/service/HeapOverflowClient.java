@@ -32,7 +32,7 @@ public class HeapOverflowClient {
 
 			responce = restTemplate.getForObject(new URI(url), WebsitesDto.class);
 		} catch (RestClientException | URISyntaxException e) {
-			throw new RuntimeException();// e.printStackTrace();
+			throw new RuntimeException();
 		}
 
 		return responce.getItems();
