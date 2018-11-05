@@ -8,7 +8,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import HeapOverflow.service.UserService;
 
@@ -24,17 +25,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authenticated().and().formLogin()/* .loginPage("/login"). */.permitAll().and().logout().permitAll();
 	}
 
-	@SuppressWarnings("deprecation")
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	@Bean
-	public static NoOpPasswordEncoder passwordEncoder() {
-		return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
+	public PasswordEncoder getPasswordEncoder() {
+		return new BCryptPasswordEncoder(8);
 	}
 
 	@Autowired
 	UserService userService;
 
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userService).passwordEncoder(null);
+		auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
 	}
 
 }
