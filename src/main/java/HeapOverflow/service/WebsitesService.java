@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import HeapOverflow.domains.Website;
 import HeapOverflow.domains.WebsiteDto;
+import org.springframework.cache.annotation.Cacheable;
 
 @Service
 public class WebsitesService {
@@ -23,8 +24,8 @@ public class WebsitesService {
 	 * 
 	 * }
 	 */
-
-	public List<Website> getAllWebsites() {
+	//@Cacheable(value= "websites")
+	public List<Website> getAllWebsites(){
 		return heapOverflowClient.getSites().stream().map(this::toWebsite).collect(Collectors.toList());
 	}
 
