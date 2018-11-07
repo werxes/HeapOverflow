@@ -27,7 +27,7 @@ public class HeapOverflowClient {
 	public List<WebsiteDto> getSites() throws Exception {
 
 		simulateSlowService();
-		String url = "https://api.stackexchange.com/2.2/sites?page=1&pagesize=9&filter=!6Oe4s7MhKAVie";
+		String url = "https://api.stackexchange.com1/2.2/sites?page=1&pagesize=9&filter=!6Oe4s7MhKAVie";
 		WebsitesDto responce = null;
 		try {
 			responce = restTemplate.getForObject(new URI(url), WebsitesDto.class);

@@ -1,6 +1,7 @@
 package HeapOverflow.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -49,23 +50,39 @@ public class main {
 	}
 
 	@GetMapping("async")
-	public String async(Model model) throws Exception {
+	public String async(Model model) {
 
-		CompletableFuture<List<Website>> websitesOne = new CompletableFuture<List<Website>>();
-		CompletableFuture<List<Website>> websitesTwo = new CompletableFuture<List<Website>>();
+		ArrayList<List<Website>> dataForModel = new ArrayList<List<Website>>();
+		boolean validModel = true;
+		try {
+			dataForModel = PopulateAsyncModel();
+		} catch (Exception e) {
+			validModel = false;
+			model.addAttribute("error", e.toString());
+		}
 
-		// try {
-		websitesOne = websitesService.getAllWebsitesAsync();
-		websitesTwo = websitesService.getAllWebsitesAsync();
-		CompletableFuture.allOf(websitesOne, websitesTwo).get();
-		// } catch (Exception e) {
-		// model.addAttribute("error", e.toString());
-		// }
-
-		model.addAttribute("websitesOne", websitesOne.get());
-		model.addAttribute("websitesTwo", websitesTwo.get());
+		if (validModel) {
+			model.addAttribute("websitesOne", dataForModel.get(0));
+			model.addAttribute("websitesTwo", dataForModel.get(1));
+		}
 		return "async";
 	}
+
+	/*
+	 * @GetMapping("async") public String async(Model model) throws Exception {
+	 * 
+	 * CompletableFuture<List<Website>> websitesOne = new
+	 * CompletableFuture<List<Website>>(); CompletableFuture<List<Website>>
+	 * websitesTwo = new CompletableFuture<List<Website>>();
+	 * 
+	 * // try { websitesOne = websitesService.getAllWebsitesAsync(); websitesTwo =
+	 * websitesService.getAllWebsitesAsync(); CompletableFuture.allOf(websitesOne,
+	 * websitesTwo).get(); // } catch (Exception e) { // model.addAttribute("error",
+	 * e.toString()); // }
+	 * 
+	 * model.addAttribute("websitesOne", websitesOne.get());
+	 * model.addAttribute("websitesTwo", websitesTwo.get()); return "async"; }
+	 */
 
 	@GetMapping("/login")
 	public String login(@RequestParam(value = "error", required = false) String error,
@@ -75,6 +92,23 @@ public class main {
 		model.addAttribute("logout", logout != null);
 
 		return "login";
+	}
+
+	private ArrayList<List<Website>> PopulateAsyncModel() throws Exception {
+		ArrayList<List<Website>> result = new ArrayList<List<Website>>();
+
+		CompletableFuture<List<Website>> websitesOne = new CompletableFuture<List<Website>>();
+		CompletableFuture<List<Website>> websitesTwo = new CompletableFuture<List<Website>>();
+		try {
+			websitesOne = websitesService.getAllWebsitesAsync();
+			websitesTwo = websitesService.getAllWebsitesAsync();
+			CompletableFuture.allOf(websitesOne, websitesTwo).get();
+		} catch (Exception e) {
+		}
+		result.add(websitesOne.get()); // .add(websitesOne.get());
+		result.add(websitesTwo.get());
+
+		return result;
 	}
 
 }
