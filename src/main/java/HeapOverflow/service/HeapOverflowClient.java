@@ -24,30 +24,26 @@ public class HeapOverflowClient {
 
 	private RestTemplate restTemplate = new RestTemplate(requestFactory);
 
+	public List<WebsiteDto> getSites() throws Exception {
 
-	public List<WebsiteDto> getSites() {
-
-		//simulateSlowService();
+		simulateSlowService();
 		String url = "https://api.stackexchange.com/2.2/sites?page=1&pagesize=9&filter=!6Oe4s7MhKAVie";
 		WebsitesDto responce = null;
 		try {
-
 			responce = restTemplate.getForObject(new URI(url), WebsitesDto.class);
 		} catch (RestClientException | URISyntaxException e) {
-			throw new RuntimeException();
+			throw new Exception(e);
 		}
 		return responce.getItems();
 	}
 
-    private void simulateSlowService() {
-        try {
-            long time = 5000L;
-            Thread.sleep(time);
-        } catch (InterruptedException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-
+	private void simulateSlowService() {
+		try {
+			long time = 500L;
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			throw new IllegalStateException(e);
+		}
+	}
 
 }

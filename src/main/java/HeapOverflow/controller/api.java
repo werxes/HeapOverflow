@@ -1,6 +1,7 @@
 package HeapOverflow.controller;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +17,8 @@ public class api {
 	private WebsitesService websitesService;
 
 	@RequestMapping("/api/heapoverflow")
-	public List<Website> getWebSites() {
-		return websitesService.getAllWebsites();
+	public CompletableFuture<List<Website>> getWebSites() throws Exception {
+		return websitesService.getAllWebsitesAsync();
 	}
 
 }

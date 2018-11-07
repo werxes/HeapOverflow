@@ -1,14 +1,15 @@
 package HeapOverflow.service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import HeapOverflow.domains.Website;
 import HeapOverflow.domains.WebsiteDto;
-import org.springframework.cache.annotation.Cacheable;
 
 @Service
 public class WebsitesService {
@@ -24,8 +25,15 @@ public class WebsitesService {
 	 * 
 	 * }
 	 */
-	//@Cacheable(value= "websites")
-	public List<Website> getAllWebsites(){
+	// @Cacheable(value= "websites")
+
+	@Async
+	public CompletableFuture<List<Website>> getAllWebsitesAsync() throws Exception {
+		return CompletableFuture.completedFuture(
+				heapOverflowClient.getSites().stream().map(this::toWebsite).collect(Collectors.toList()));
+	}
+
+	public List<Website> getAllWebsites() throws Exception {
 		return heapOverflowClient.getSites().stream().map(this::toWebsite).collect(Collectors.toList());
 	}
 

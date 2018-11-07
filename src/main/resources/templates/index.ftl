@@ -1,36 +1,52 @@
 <#import "parts/common.ftl" as c>
 <@c.page>
 
-Hello ${username}
+
 <br>
+
 <div class="card">
   <div class="card-header">
-    Featured
+    Hello ${username}
   </div>
   <div class="card-body">
-    <table class="table">
-	  <thead>
-	    <tr>
-	      <th scope="col">Id</th>
-	      <th scope="col">Title</th>
-	      <th scope="col">Description</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <tr ng-repeat="item in websites">
-	      <th>{{item.id}}</th>
-	      <td>{{item.title}}</td>
-	      <td>{{item.description}}</td>
-	    </tr>
-	  </tbody>
-	</table>
+
+
+    <div class="list-group">
+
+  		<a href="/angular" class="list-group-item list-group-item-action flex-column align-items-start">
+    		<div class="d-flex w-100 justify-content-between">
+      		<h5 class="mb-1">Angular</h5>
+    		</div>
+  	  	<p class="mb-1">Get data using AngularJS.</p>
+	  	</a>
+
+			<a href="/async" class="list-group-item list-group-item-action flex-column align-items-start">
+    		<div class="d-flex w-100 justify-content-between">
+      		<h5 class="mb-1">Async</h5>
+    		</div>
+  	  	<p class="mb-1">Get multiple REST services in asyncronius.</p>
+	  	</a>
+
+			<a href="/handleerror" class="list-group-item list-group-item-action flex-column align-items-start">
+    		<div class="d-flex w-100 justify-content-between">
+      		<h5 class="mb-1">Handle Error</h5>
+    		</div>
+  	  	<p class="mb-1">Get data from Service Handlig error.</p>
+	  	</a>
+
+
+
+	</div>
+
+
   </div>
 </div>
+
 
 <br>
 
 <form action="/logout" method="post">
-	<input type="submit" value="Logout"/>
+		<button type="submit" class="btn btn-info">Logout</button>
     <input type="hidden" name="_csrf" value="${_csrf.token}" />
 </form>
 
